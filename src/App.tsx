@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC } from 'react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-function App() {
+
+import './App.css';
+import { Navigationbar } from './components/Navigationbar';
+import { Home } from './Views/Home';
+
+const App: FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <Router>
+        <Navigationbar />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          {/* <Route exact path="/list">
+            <List /> */}
+          {/* </Route>  */}
+
+          {/* <Route exact path="/register">
+            <Register />
+          </Route> */}
+          {/* <Route exact path="/login">
+            <Login />
+          </Route> */}
+          {/* <Route exact path="/profile">
+            <Profile />
+          </Route> */}
+          {/* <Route exact path="/:id">
+            <Listdetails />
+          </Route>  */}
+        </Switch>
+      </Router>
+
+
+
+
+
     </div>
   );
 }
