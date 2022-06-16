@@ -7,6 +7,12 @@ export interface Props {
 }
 
 export function Navigationbar(props: Props) {
+  const [click, setClick] = React.useState(false);
+  const handleClick = () => {
+    setClick(!click);
+  };
+
+
   return (
     <div>
       <Navbar bg="myBar" variant="dark">

@@ -1,0 +1,9 @@
+.home-img {
+  width: 100%;
+  height: auto;
+  position: fixed;
+  background-size: cover;
+  object-fit: cover;
+  overflow: hidden;
+  opacity: 0.8;
+}
