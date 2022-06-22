@@ -9,13 +9,15 @@ export function Createrestaurant(props: IAppProps) {
 
   const [selectedFile, setSelectedFile] = useState<Blob>();
   const [selectedMultiFile, setSelectedMultiFile] = useState<Blob>();
-  const [mainImagelink, setMainImageLink] = useState<string>("");
+  const [mainRestaurantData, setmainRestaurantData] = useState<string>("");
   // end of useStates
 
   const submitHandler = async (data: any, e: any) => {
     //REST API
     const formData = new FormData();
-    if (selectedFile !== undefined) formData.append("file", selectedFile);
+    if (selectedFile !== undefined) formData.append("files", selectedFile);
+    if (selectedMultiFile !== undefined)
+      formData.append("files", selectedMultiFile);
     formData.append("name", "name");
     console.log("formData", formData);
     console.log("selectedMultiFile", selectedMultiFile);
@@ -26,7 +28,7 @@ export function Createrestaurant(props: IAppProps) {
     })
       .then((res) => res.json())
       .then((resData) =>
-        setMainImageLink(`mutation {createRestaurant(restaurantInput:{restaurantzip:"${
+        setmainRestaurantData(`mutation {createRestaurant(restaurantInput:{restaurantzip:"${
           data.restaurantcity
         }",restaurantname:"${data.restaurantname}",restaurantcity:"${
           data.restaurantcity
@@ -37,26 +39,26 @@ export function Createrestaurant(props: IAppProps) {
         }",restaurantdescriptionshort:"${
           data.restaurantdescriptionshort
         }",restaurantMainImage:"${
-          resData.message.split(`"location":"`).pop().split(`","etag`)[0]
-        }"}){
-  _id
-}}
-`)
+          JSON.parse(resData.message)[0].location
+        }",restaurantImage2:"${JSON.parse(resData.message)[1].location}"}){
+          _id
+        }}
+        `)
       )
       .catch((err) => console.log(err));
     // END OF REST API
-
-    console.log("selectedFile", mainImagelink);
+    //
+    console.log("selectedFile", mainRestaurantData);
     e.preventDefault();
     console.log(data.restaurantname);
     console.log(e);
-    console.log("mainImageLink", mainImagelink);
+    console.log("mainRestaurantData", mainRestaurantData);
 
     await fetch("http://localhost:8080/graphql", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        query: mainImagelink,
+        query: mainRestaurantData,
       }),
     })
       .then((res) => res.json())
@@ -113,11 +115,12 @@ export function Createrestaurant(props: IAppProps) {
           name="images"
           id="imgid"
           className="imgcls"
+          content-type="multipart/form-data"
           onChange={(e) => {
             if (e.target.files !== null)
               setSelectedMultiFile(e.target.files[0]);
           }}
-          multiple
+          // multiple
         />
         <br />
         submit<button type="submit">Submit</button>
@@ -125,3 +128,5 @@ export function Createrestaurant(props: IAppProps) {
     </div>
   );
 }
+
+// Notes for multiple file upload, as for now upload only works with 2 3 or 4 files, more is rejected, less than 2 will give an error because of receiving an array, we can ofcourse only allow multiple files to upload by making them mandetory, only file 1 and to 2are implemented on front end, backend is ready to receive 4 files, names will need to be restaurantImage3 and restaurantImage4
