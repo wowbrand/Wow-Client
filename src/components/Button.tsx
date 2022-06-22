@@ -1,23 +1,26 @@
 import React from "react";
 
-interface Props {
+interface ButtonProps {
   border: string;
   color: string;
+  font: string;
   children?: React.ReactNode;
   height: string;
-  onClick: () => void;
+  onClick?: () => void;
   radius: string
   width: string;
+  fontfamily: string;
 }
-
-const Button: React.FC<Props> = ({
+const Button: React.FC<ButtonProps> = ({
   border,
   color,
+  font,
   children,
   height,
   onClick,
   radius,
-  width
+  width,
+  fontfamily
 }) => {
   return (
     <button
@@ -26,14 +29,14 @@ const Button: React.FC<Props> = ({
         backgroundColor: color,
         border,
         borderRadius: radius,
+        fontSize: font,
+        fontFamily: fontfamily,
         height,
         width
-      }}
+    }}
     >
       {children}
     </button>
   );
 }
-
-// export default Button;
-export { }
+export default Button;
