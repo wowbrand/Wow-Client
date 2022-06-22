@@ -1,5 +1,12 @@
 import * as React from "react";
 import { useState } from "react";
+import { Button, Form, FormGroup, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+interface userlogin {
+  token: string
+  userId : string
+}
 
 export interface IAppProps {}
 
@@ -50,16 +57,44 @@ export function Login(props: IAppProps) {
   //end of to remove, only for demo purposes
 
   return (
-    <div>
-      <h1>Login</h1>
-      {/* to remove later, only for demo purpose  */}
-      <div>
-        <button onClick={loginHandler}>Login</button>
-        email:
-        <input onChange={emailHandler} />
-        password: <input onChange={passwordHandler} />
+    <div className="color-overlay d-flex justify-content-center align-items-center">
+      <Form className="rounded p-4 p-sm-3">
+        <h4>Login</h4>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email Address</Form.Label>
+          <Form.Control
+          type="email"
+          onChange={emailHandler}
+          name="email"
+            value={email ? email : ""}
+            placeholder="Enter email"
+          />
+          <Form.Text className="text-muted">
+            We'll not share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+                <FormGroup className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+          type="password"
+          onChange={passwordHandler}
+          name="password"
+            value={password ? password : ""}
+            placeholder="password"
+          />
+          </FormGroup>
+         <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Remember Me" />
+        </Form.Group>
+        <Button variant="outline-primary" type="submit" onClick={loginHandler }>
+          Login
+        </Button>
+        <Nav.Link as={Link} to={"/register"}>
+      New user? Click here to register.
+      </Nav.Link>
+
+</Form>
       </div>
-      {/* end of to remove later, only for demo purpose */}
-    </div>
+
   );
 }
