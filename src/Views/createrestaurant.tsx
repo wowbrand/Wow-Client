@@ -11,9 +11,9 @@ export function Createrestaurant(props: IAppProps) {
   const [selectedMultiFile, setSelectedMultiFile] = useState<Blob>();
   const [mainRestaurantData, setmainRestaurantData] = useState<string>("");
   // end of useStates
-
-  const submitHandler = async (data: any, e: any) => {
-    //REST API
+  const [uploadedPicOne, setUploadedPicOne] = useState<string>("https://restaurant-olympiasee.de/files/restaurant-olympiasee/galerie/Seerestaurant_AO_05klein.jpg")
+  const [uploadedPicTwo, setUploadedPicTwo] = useState<string>("https://restaurant-olympiasee.de/files/restaurant-olympiasee/galerie/Seerestaurant_AO_05klein.jpg")
+  const uploadPic = async () => {
     const formData = new FormData();
     if (selectedFile !== undefined) formData.append("files", selectedFile);
     if (selectedMultiFile !== undefined)
@@ -22,13 +22,29 @@ export function Createrestaurant(props: IAppProps) {
     console.log("formData", formData);
     console.log("selectedMultiFile", selectedMultiFile);
 
-    await fetch("http://localhost:8080/img-upload/", {
-      method: "PUT",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((resData) =>
-        setmainRestaurantData(`mutation {createRestaurant(restaurantInput:{restaurantzip:"${
+    try {
+      const res = await fetch("http://localhost:8080/img-upload/", {
+        method: "PUT",
+        body: formData,
+      })
+      const resData = await res.json()
+      console.log('resData :>> ', resData);
+      JSON.parse(resData.message)[0] !== undefined &&
+        setUploadedPicOne(JSON.parse(resData.message)[0].location)
+      JSON.parse(resData.message)[1] !== undefined && setUploadedPicTwo(JSON.parse(resData.message)[1].location)
+    } catch (err) {
+      console.log('err', err)
+    }
+  }
+
+
+
+  const submitHandler = async (data: any, e: any) => {
+    e.preventDefault();
+    //REST API
+
+    try {
+        const mutation = `mutation {createRestaurant(restaurantInput:{restaurantzip:"${
           data.restaurantcity
         }",restaurantname:"${data.restaurantname}",restaurantcity:"${
           data.restaurantcity
@@ -38,31 +54,35 @@ export function Createrestaurant(props: IAppProps) {
           data.restaurantstreetnumber
         }",restaurantdescriptionshort:"${
           data.restaurantdescriptionshort
-        }",restaurantMainImage:"${
-          JSON.parse(resData.message)[0].location
-        }",restaurantImage2:"${JSON.parse(resData.message)[1].location}"}){
+          }",restaurantMainImage:"${uploadedPicOne
+        }",restaurantImage2:"${uploadedPicTwo}"}){
           _id
         }}
-        `)
-      )
-      .catch((err) => console.log(err));
-    // END OF REST API
+        `
+
+
+
+      // END OF REST API
     //
-    console.log("selectedFile", mainRestaurantData);
-    e.preventDefault();
-    console.log(data.restaurantname);
-    console.log(e);
-    console.log("mainRestaurantData", mainRestaurantData);
+    console.log('mutation', mutation)
 
     await fetch("http://localhost:8080/graphql", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        query: mainRestaurantData,
+        query: mutation,
       }),
     })
       .then((res) => res.json())
-      .then((resData) => basicOutput(resData));
+      .then((resData) => basicOutput(resData)).catch(err => console.log('err', err))
+    } catch (err) {
+      console.log('err :>> ', err);
+    }
+
+
+
+
+
   };
 
   const basicOutput = (output: any) => {
@@ -99,7 +119,12 @@ export function Createrestaurant(props: IAppProps) {
         restaurantdescriptionshort
         <input {...register("restaurantdescriptionshort")} />
         <br />
-        Main Picture:
+
+        <br />
+        submit<button type="submit">Submit</button>
+      </form>
+
+Main Picture:
         <input
           type="file"
           id="file-input"
@@ -122,9 +147,10 @@ export function Createrestaurant(props: IAppProps) {
           }}
           // multiple
         />
-        <br />
-        submit<button type="submit">Submit</button>
-      </form>
+
+
+          <button onClick={uploadPic}>Upload pictures</button>
+
     </div>
   );
 }

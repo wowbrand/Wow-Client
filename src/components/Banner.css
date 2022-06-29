@@ -7,7 +7,7 @@
 .landing{
   width: 100%;
   min-height: 100vh;
-  background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),url("https://media.vogue.de/photos/5d935696973d550008316355/master/pass/Stocksy_txp87ee30489HU200_Medium_2462135.jpg");
+  background-image: linear-gradient(rgba(0,0,0,0.60), rgba(0,0,0,0.60)),url("https://media.vogue.de/photos/5d935696973d550008316355/master/pass/Stocksy_txp87ee30489HU200_Medium_2462135.jpg");
   background-position: center;
   background-size:cover ;
   opacity: 0.9;

@@ -8,8 +8,9 @@ import { List } from "./Views/List";
 import { Register } from "./Views/Register";
 import { Login } from "./Views/Login";
 import { Profile } from "./Views/Profile";
-import { Listdetails } from "./Views/Listdetails";
+// import { Listdetails } from "./Views/Listdetails";
 import { Createrestaurant } from "./Views/createrestaurant";
+import { Restaurants } from "./Views/Restaurants";
 
 const App: FC = () => {
   return (
@@ -27,6 +28,9 @@ const App: FC = () => {
           <Route exact path="/createrestaurant">
             <Createrestaurant />
           </Route>
+          <Route exact path="/restaurants/:name">
+            <Restaurants />
+          </Route>
           <Route exact path="/register">
             <Register />
           </Route>
@@ -36,9 +40,9 @@ const App: FC = () => {
           <Route exact path="/profile">
             <Profile />
           </Route>
-          <Route exact path="/:id">
-            <Listdetails />
-          </Route>
+          {/* <Route exact path="restaurants/:name">
+            <Restaurants />
+          </Route> */}
         </Switch>
       </Router>
     </div>
