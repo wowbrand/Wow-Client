@@ -1,8 +1,10 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { Map } from "../components/Map";
+import { Form, Button, FormGroup } from "react-bootstrap";
 
-export interface IAppProps {}
+export interface IAppProps { }
 
 export function Createrestaurant(props: IAppProps) {
   //UseStates
@@ -44,17 +46,12 @@ export function Createrestaurant(props: IAppProps) {
     //REST API
 
     try {
-        const mutation = `mutation {createRestaurant(restaurantInput:{restaurantzip:"${
-          data.restaurantcity
-        }",restaurantname:"${data.restaurantname}",restaurantcity:"${
-          data.restaurantcity
-        }",restaurantstreet:"${data.restaurantstreet}",restaurantdescription:"${
-          data.restaurantdescription
-        }",restaurantstreetnumber:"${
-          data.restaurantstreetnumber
-        }",restaurantdescriptionshort:"${
-          data.restaurantdescriptionshort
-          }",restaurantMainImage:"${uploadedPicOne
+      const mutation = `mutation {createRestaurant(restaurantInput:{restaurantzip:"${data.restaurantcity
+        }",restaurantname:"${data.restaurantname}",restaurantcity:"${data.restaurantcity
+        }",restaurantstreet:"${data.restaurantstreet}",restaurantdescription:"${data.restaurantdescription
+        }",restaurantstreetnumber:"${data.restaurantstreetnumber
+        }",restaurantdescriptionshort:"${data.restaurantdescriptionshort
+        }",restaurantMainImage:"${uploadedPicOne
         }",restaurantImage2:"${uploadedPicTwo}"}){
           _id
         }}
@@ -63,18 +60,18 @@ export function Createrestaurant(props: IAppProps) {
 
 
       // END OF REST API
-    //
-    console.log('mutation', mutation)
+      //
+      console.log('mutation', mutation)
 
-    await fetch("http://localhost:8080/graphql", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        query: mutation,
-      }),
-    })
-      .then((res) => res.json())
-      .then((resData) => basicOutput(resData)).catch(err => console.log('err', err))
+      await fetch("http://localhost:8080/graphql", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({
+          query: mutation,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => basicOutput(resData)).catch(err => console.log('err', err))
     } catch (err) {
       console.log('err :>> ', err);
     }
@@ -96,35 +93,69 @@ export function Createrestaurant(props: IAppProps) {
   const onError = (errors: any, e: any) => console.log(errors, e);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(submitHandler, onError)}>
-        restaurantname
-        <input {...register("restaurantname")} />
-        <br />
-        restaurantcity
-        <input {...register("restaurantcity")} />
-        <br />
-        restaurantzip
-        <input {...register("restaurantzip")} />
-        <br />
-        restaurantstreet
-        <input {...register("restaurantstreet")} />
-        <br />
-        restaurantstreetnumber
-        <input {...register("restaurantstreetnumber")} />
-        <br />
-        restaurantdescription
-        <input {...register("restaurantdescription")} />
-        <br />
-        restaurantdescriptionshort
-        <input {...register("restaurantdescriptionshort")} />
-        <br />
+    <div className="color-overlay d-flex justify-content-center align-items-center">
+      <Form className="rounded p-4 p-sm-3">
+        <h2>Add your favourite Restaurant</h2>
+        <Form.Group className="mb-3" onSubmit={handleSubmit(submitHandler, onError)}>
+          <Form.Label>Restaurant Name &nbsp;&nbsp;
+            <input {...register("restaurantname")} />
+          </Form.Label>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>
+            Restaurant City &nbsp;&nbsp;
+            <input {...register("restaurantcity")} />
+          </Form.Label>
+        </Form.Group>
+        <Form.Group className="mb-3">
 
-        <br />
-        submit<button type="submit">Submit</button>
-      </form>
+          <Form.Label>
+            Restaurantzip &nbsp;&nbsp;
+            <input {...register("restaurantzip")} />
+          </Form.Label>
+        </Form.Group>
 
-Main Picture:
+        <Form.Group className="mb-3">
+
+          <Form.Label>
+            Street &nbsp;&nbsp;&nbsp;
+            <input {...register("restaurantstreet")} />
+          </Form.Label>
+        </Form.Group>
+        <Form.Group className="mb-3">
+
+          <Form.Label>
+            Street Number &nbsp;&nbsp;
+            <input {...register("restaurantstreetnumber")} />
+          </Form.Label>
+        </Form.Group>
+        <Form.Group className="mb-3">
+
+          <Form.Label>
+            Restaurant description &nbsp;
+            <input {...register("restaurantdescription")} />
+          </Form.Label>
+        </Form.Group>
+        <Form.Group className="mb-3">
+
+          <Form.Label>
+            Restaurant shortdescription &nbsp;
+            <input {...register("restaurantdescriptionshort")} />
+          </Form.Label>
+        </Form.Group>
+        <Button
+          variant="outline-primary"
+          type="submit"
+          onClick={uploadPic}
+        >
+          Submit
+        </Button>
+        {/* </form> */}
+        <br></br>
+        <br></br>
+
+
+        Main Picture:
         <input
           type="file"
           id="file-input"
@@ -145,13 +176,21 @@ Main Picture:
             if (e.target.files !== null)
               setSelectedMultiFile(e.target.files[0]);
           }}
-          // multiple
+        // multiple
         />
+        <br></br>
+        <br></br>
+        <Button
+          variant="outline-primary"
+          type="submit"
+          onClick={uploadPic}
+        >
+          Upload Pictures
+        </Button>
 
+      </Form>
 
-          <button onClick={uploadPic}>Upload pictures</button>
-
-    </div>
+    </div >
   );
 }
 

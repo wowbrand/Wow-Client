@@ -13,7 +13,7 @@ export interface IAppProps { }
 
 
 export function Register(props: IAppProps) {
-
+  console.log("hez");
   //texthandlers
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");

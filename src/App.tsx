@@ -28,9 +28,11 @@ const App: FC = () => {
           <Route exact path="/createrestaurant">
             <Createrestaurant />
           </Route>
+
           <Route exact path="/restaurants/:name">
             <Restaurants />
           </Route>
+
           <Route exact path="/register">
             <Register />
           </Route>
