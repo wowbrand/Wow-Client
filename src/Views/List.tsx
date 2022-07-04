@@ -13,6 +13,8 @@ export function List(props: IAppProps) {
   const [loading, setLoading] = useState(true)
   const restaurantHandler = async () => {
     // e.preventDefault();
+
+
     const graphglQuery: any = {
       query: `{
         viewRestaurant(restaurantname: "${""}"){
@@ -30,10 +32,14 @@ export function List(props: IAppProps) {
       .then((resData) => basicOutput(resData));
   };
   const basicOutput = async (output: any) => {
-    setRestaurants(JSON.parse(output.data.viewRestaurant.restaurant));
-    setLoading(false)
-    console.log(restaurants)
 
+    // setRestaurants(JSON.parse(output.data.viewRestaurant.restaurant));
+    // setLoading(false)
+    // console.log(restaurants)
+
+    await setRestaurants(JSON.parse(output.data.viewRestaurant.restaurant));
+    setLoading(false);
+    await console.log(restaurants);
   };
 
   useEffect(() => {
@@ -41,7 +47,7 @@ export function List(props: IAppProps) {
   }, []);
 
   setTimeout(() => {
-    console.log('restaurants :>> ', restaurants);
+    console.log("restaurants :>> ", restaurants);
   }, 1000);
   return (
     <div >
@@ -93,6 +99,7 @@ export function List(props: IAppProps) {
             />
           </Link>
         </div>
+
       </div>
     </div>
   );

@@ -11,6 +11,8 @@ import { Profile } from "./Views/Profile";
 // import { Listdetails } from "./Views/Listdetails";
 import { Createrestaurant } from "./Views/createrestaurant";
 import { Restaurants } from "./Views/Restaurants";
+import { useLocation } from "react-router-dom";
+// import { useEffect } from "react";
 
 const App: FC = () => {
   return (
@@ -29,7 +31,7 @@ const App: FC = () => {
             <Createrestaurant />
           </Route>
 
-          <Route exact path="/restaurants/:name">
+          <Route exact path="/:name">
             <Restaurants />
           </Route>
 
