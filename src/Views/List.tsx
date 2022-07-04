@@ -4,21 +4,13 @@ import { Link } from "react-router-dom";
 import { ButtonProps } from "react-bootstrap";
 import Button from "../components/Button";
 
+import "./List.css";
 
-
-import "./List.css"
-
-
-
-
-
-
-export interface IAppProps { }
+export interface IAppProps {}
 
 export function List(props: IAppProps) {
-
-  const [restaurants, setRestaurants] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [restaurants, setRestaurants] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const restaurantHandler = async (e: any) => {
     e.preventDefault();
     const graphglQuery: any = {
@@ -36,15 +28,12 @@ export function List(props: IAppProps) {
     })
       .then((res) => res.json())
       .then((resData) => basicOutput(resData));
-
-
   };
 
   const basicOutput = async (output: any) => {
     await setRestaurants(JSON.parse(output.data.viewRestaurant.restaurant));
-    setLoading(false)
-    await console.log(restaurants)
-
+    setLoading(false);
+    await console.log(restaurants);
   };
 
   // useEffect(() => {
@@ -53,19 +42,13 @@ export function List(props: IAppProps) {
   // }, [loading, restaurants, restaurantHandler]);
 
   setTimeout(() => {
-    console.log('restaurants :>> ', restaurants);
+    console.log("restaurants :>> ", restaurants);
   }, 1000);
 
-
-
   return (
-
-
     <div className="restaurantcontainer">
       <div className="crbt">
-
         <Link to={"/createrestaurant"}>
-
           <Button
             border="none"
             color="#8FBDD3"
@@ -84,24 +67,35 @@ export function List(props: IAppProps) {
             return (
               <div className="card text-center " key={restaurant._id}>
                 <div className="overflow">
-                  <img className="restaurant-img" src={restaurant.restaurantMainImage} alt="" />
+                  <img
+                    className="restaurant-img"
+                    src={restaurant.restaurantMainImage}
+                    alt=""
+                  />
                 </div>
                 <div className="card-body cl-md-4 text-dark">
                   <h4 className="card-name">{restaurant.restaurantname}</h4>
-                  <p className="card-text text-secondary">{restaurant.restaurantdescription}</p>
-                  <p className="card-text text-secondary">{restaurant.restaurantcity}</p>
+                  <p className="card-text text-secondary">
+                    {restaurant.restaurantdescription}
+                  </p>
+                  <p className="card-text text-secondary">
+                    {restaurant.restaurantcity}
+                  </p>
 
                   {/* <MyLink state={{
                     restaurant,
                   }} to={`restaurants/${restaurant.restaurantname}`} /> */}
 
-
-
-                  <Link to={{ pathname: `restaurants/${restaurant.restaurantname}`, state: restaurant }}>
+                  <Link
+                    to={{
+                      pathname: `/${restaurant.restaurantname}`,
+                      state: restaurant,
+                    }}
+                  >
                     {/* <Link to={{ pathname: `restaurants/${restaurant.restaurantname}`, state: restaurant }}> */}
                     <Button
                       border="none"
-                      color="#8FBDD3"
+                      color="#8FBDD4"
                       font="18px"
                       fontfamily="'Josefin Sans', sans-serif"
                       height="75px"
@@ -116,7 +110,6 @@ export function List(props: IAppProps) {
           })}
         <button onClick={restaurantHandler}>requestaurants</button>
       </div>
-
     </div>
   );
 }
