@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
-import { ButtonProps, Carousel } from "react-bootstrap";
+import { ButtonProps } from "react-bootstrap";
 import Button from '../components/Button';
+import Carousel from 'react-bootstrap/Carousel'
 
 
 export interface IAppProps {
@@ -29,12 +30,12 @@ export function Restaurants(props: IAppProps) {
   return (
     <div className="restdetail">
       <h1>{name}</h1>
-      <Carousel>
+      <Carousel interval={3000}>
         <Carousel.Item>
-          <img className="detailimg" src={state.restaurantMainImage} alt="" />
+          <img src={state.restaurantMainImage} alt="" />
         </Carousel.Item>
         <Carousel.Item>
-          <img className="detailimg" src={state.restaurantImage2} alt="" />
+          <img src={state.restaurantImage2} alt="" />
         </Carousel.Item>
       </Carousel>
       <p className="details">{state.restaurantdescription}</p>

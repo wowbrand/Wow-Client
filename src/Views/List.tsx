@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ButtonProps, Spinner } from "react-bootstrap";
 import Button from "../components/Button";
 import "./List.css"
-import { Map } from "../components/Map";
+// import { Map } from "../components/Map";
 export interface IAppProps { }
 
 export function List(props: IAppProps) {
@@ -45,7 +45,7 @@ export function List(props: IAppProps) {
   }, 1000);
   return (
     <div >
-      <Map />
+      {/* <Map /> */}
       <div className="restaurantcontainer">
         <div className="myrestaurants">
           {loading ? (<>
