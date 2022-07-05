@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
+import * as React from "react";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { ButtonProps, Carousel } from "react-bootstrap";
-import Button from '../components/Button';
+import Button from "../components/Button";
 // import Carousel from 'react-bootstrap/Carousel'
 
 export interface IAppProps {}
@@ -27,6 +27,55 @@ export function Restaurants(props: IAppProps) {
 
   const [comment, setComment] = React.useState("");
   const [commentList, setCommentList] = React.useState("");
+
+  let likeUnlikeHandler = async function (e: any) {
+    e.preventDefault();
+    const graphglQuery: any = {
+      query: `mutation {
+    createlikeUnlike(likeUnlikeInput: {user: "Placeholder user", likeId: "${state._id}"})
+
+    {
+     likedAmount
+      likedBoolean
+    }}
+  `,
+    };
+    await fetch("http://localhost:8080/graphql", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(graphglQuery),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        console.log(resData);
+      });
+  };
+
+  let likeViewHandler = async function (e: any) {
+    e.preventDefault();
+    const graphglQuery: any = {
+      query: `query {
+        likesCheck(restaurantId:"62b474ab262b42f6c1f61817", user:"245575E53"){
+          likedAmount
+          likedBoolean
+        }
+      }
+  `,
+    };
+    await fetch("http://localhost:8080/graphql", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(graphglQuery),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        console.log(resData);
+      });
+  };
+
+  // let likeCheckHandler = async function (e: any) {
+  //   e.preventDefault();
+  // };
 
   let commentClickHandler = async function (e: any) {
     console.log(typeof e);
@@ -95,9 +144,9 @@ export function Restaurants(props: IAppProps) {
         </Carousel.Item>
         <Carousel.Item>
           <img src={state.restaurantImage2} alt="" />
-         </Carousel.Item>
-    </Carousel>
-       <p className="details">{state.restaurantdescription}</p>
+        </Carousel.Item>
+      </Carousel>
+      <p className="details">{state.restaurantdescription}</p>
       <p className="details">{state.restaurantdescriptionshort}</p>
       <p className="details">{state.restaurantcity}</p>
       <p className="details">{state.restaurantstreetnumber}</p>
@@ -117,7 +166,7 @@ export function Restaurants(props: IAppProps) {
       </Link>
       <br></br>
       <br></br>
-<Link to={"/map"}>
+      <Link to={"/map"}>
         <Button
           border="none"
           color="#8FBDD3"
@@ -129,11 +178,6 @@ export function Restaurants(props: IAppProps) {
           children="Find your route"
         />
       </Link>
-
-
-
-
-
 
       {/* Placeholder code for backend */}
       <form>
@@ -148,6 +192,8 @@ export function Restaurants(props: IAppProps) {
             value="receiver"
             onClick={commentReceiveHandler}
           />
+          <input type="submit" value="LikeUnlike" onClick={likeUnlikeHandler} />
+          <input type="submit" value="likeview" onClick={likeViewHandler} />
         </div>
       </form>
       {/* end of placeholder code for backend */}
