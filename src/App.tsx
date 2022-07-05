@@ -12,7 +12,9 @@ import { Profile } from "./Views/Profile";
 import { Createrestaurant } from "./Views/createrestaurant";
 import { Restaurants } from "./Views/Restaurants";
 import { useLocation } from "react-router-dom";
-// import { useEffect } from "react";
+import { useEffect } from "react";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { Map } from "./components/Map";
 
 const App: FC = () => {
   return (
@@ -31,8 +33,11 @@ const App: FC = () => {
             <Createrestaurant />
           </Route>
 
-          <Route exact path="/:name">
+          <Route exact path="/restaurants/:name">
             <Restaurants />
+          </Route>
+          <Route exact path="/map">
+            <Map/>
           </Route>
 
           <Route exact path="/register">

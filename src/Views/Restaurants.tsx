@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
-import { ButtonProps } from "react-bootstrap";
+import { ButtonProps, Carousel } from "react-bootstrap";
 import Button from '../components/Button';
-import Carousel from 'react-bootstrap/Carousel'
+// import Carousel from 'react-bootstrap/Carousel'
 
 export interface IAppProps {}
 interface RestaurantDetailsParams {
@@ -95,9 +95,9 @@ export function Restaurants(props: IAppProps) {
         </Carousel.Item>
         <Carousel.Item>
           <img src={state.restaurantImage2} alt="" />
-        </Carousel.Item>
-      </Carousel>
-      <p className="details">{state.restaurantdescription}</p>
+         </Carousel.Item>
+    </Carousel>
+       <p className="details">{state.restaurantdescription}</p>
       <p className="details">{state.restaurantdescriptionshort}</p>
       <p className="details">{state.restaurantcity}</p>
       <p className="details">{state.restaurantstreetnumber}</p>
@@ -115,6 +115,25 @@ export function Restaurants(props: IAppProps) {
           children="Back"
         />
       </Link>
+      <br></br>
+      <br></br>
+<Link to={"/map"}>
+        <Button
+          border="none"
+          color="#8FBDD3"
+          font="24px"
+          fontfamily="'Josefin Sans', sans-serif"
+          height="65px"
+          radius="5%"
+          width="120px"
+          children="Find your route"
+        />
+      </Link>
+
+
+
+
+
 
       {/* Placeholder code for backend */}
       <form>
