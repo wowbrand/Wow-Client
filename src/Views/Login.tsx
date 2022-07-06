@@ -29,7 +29,7 @@ export function Login(props: IAppProps) {
   //Front-end GraphQL connection no front end error handling, just as basic as possible connection
   const loginHandler = async (event: any) => {
     console.log("password", password);
-    event.preventDefault();
+
     const graphglQuery: any = {
       query: `{
         login(email: "${email}", password: "${password}"){

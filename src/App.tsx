@@ -8,6 +8,7 @@ import { List } from "./Views/List";
 import { Register } from "./Views/Register";
 import { Login } from "./Views/Login";
 import { Profile } from "./Views/Profile";
+import { Logout } from "./Views/Logout";
 // import { Listdetails } from "./Views/Listdetails";
 import { Createrestaurant } from "./Views/createrestaurant";
 import { Restaurants } from "./Views/Restaurants";
@@ -61,6 +62,9 @@ const App: FC = () => {
           </Route>
           <Route exact path="/login">
             <Login />
+          </Route>
+          <Route exact path="/logout">
+            <Logout />
           </Route>
           <Route exact path="/profile">
             <Profile />
