@@ -13,7 +13,7 @@ export function Banner(props: ButtonProps) {
     <div className="landing">
       <div className="banner-foto">
         <h1>Discover the Realm of Vegan Food.</h1>
-        <p>Want to enjoy Vegan food</p>
+        <p>Want to enjoy </p>
         <br></br><br></br>
         <div className="hero-btn">
           <Link to={"/list"}>

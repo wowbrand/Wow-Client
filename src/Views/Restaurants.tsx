@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
-import { Button, Carousel, Form,  } from "react-bootstrap";
+import { Button, Carousel, Form, } from "react-bootstrap";
 import ButtonProps from '../components/Button';
 
 
-export interface IAppProps {}
+export interface IAppProps { }
 interface RestaurantDetailsParams {
   name: string;
 }
@@ -55,7 +55,7 @@ export function Restaurants(props: IAppProps) {
     e.preventDefault();
     const graphglQuery: any = {
       query: `query {
-        likesCheck(restaurantId:"62b474ab262b42f6c1f61817", user:"245575E53"){
+        likesCheck(restaurantId:"${state._id}", user:""){
           likedAmount
           likedBoolean
         }
@@ -83,9 +83,8 @@ export function Restaurants(props: IAppProps) {
     console.log("comment", comment);
     const graphglQuery: any = {
       query: `mutation {
-    createComments(commentsInput: {user: "${"placeholderName"}", comment: "${comment}", option: "create", restaurantId: "${
-        state._id
-      }" })
+    createComments(commentsInput: {user: "${"placeholderName"}", comment: "${comment}", option: "create", restaurantId: "${state._id
+        }" })
 
     {
      user
@@ -166,7 +165,7 @@ export function Restaurants(props: IAppProps) {
       </Link>
       <br></br>
       <br></br>
-<Link to={"/map"}>
+      <Link to={"/map"}>
         <ButtonProps
 
           border="none"
@@ -181,34 +180,34 @@ export function Restaurants(props: IAppProps) {
       </Link>
 
 
-<div className="container mt-5">
-    <div className="d-flex justify-content-center row">
-        <div className="col-md-8">
+      <div className="container mt-5">
+        <div className="d-flex justify-content-center row">
+          <div className="col-md-8">
             <div className="d-flex flex-column comment-section">
-                <div className="bg-white p-2">
+              <div className="bg-white p-2">
               </div>
-      <div className="like p-2 cursor"><i className="fa fa-commenting-o"></i><span className="ml-1">Comment</span></div>
+              <div className="like p-2 cursor"><i className="fa fa-commenting-o"></i><span className="ml-1">Comment</span></div>
               <div className="bg-light p-2">
                 <div className="d-flex flex-row align-items-start"></div>
 
-          <Form.Control
-            onChange={commentHandler}
-            placeholder="Your comment"
-              />
-<div className="mt-2 text-right">
-                <Button
-          variant="btn btn-primary btn-sm shadow-none"
-          type="submit"
-                  onClick={commentClickHandler}
-        >
-          Post Comment
-                </Button>
+                <Form.Control
+                  onChange={commentHandler}
+                  placeholder="Your comment"
+                />
+                <div className="mt-2 text-right">
+                  <Button
+                    variant="btn btn-primary btn-sm shadow-none"
+                    type="submit"
+                    onClick={commentClickHandler}
+                  >
+                    Post Comment
+                  </Button>
                 </div>
-                </div>
+              </div>
+            </div>
           </div>
         </div>
-    </div>
-</div>
+      </div>
 
 
 
@@ -221,26 +220,26 @@ export function Restaurants(props: IAppProps) {
 
 
 
-{/*
+      {/*
         Placeholder code for backend
       {/* Placeholder code for backend */}
       <form>
-        <label>
+        {/* <label>
           your comment about this awesome restaurant:
           <input type="text" name="name" onChange={commentHandler} />
         </label>
-        <input type="submit" value="Submit" onClick={commentClickHandler} />
+        <input type="submit" value="Submit" onClick={commentClickHandler} /> */}
         <div>
-          <input
+          {/* <input
             type="submit"
             value="receiver"
             onClick={commentReceiveHandler}
-          />
+          /> */}
           <input type="submit" value="LikeUnlike" onClick={likeUnlikeHandler} />
           <input type="submit" value="likeview" onClick={likeViewHandler} />
         </div>
       </form>
-       end of placeholder code for backend */
+      {/* end of placeholder code for backend  */}
     </div>
 
   );
