@@ -8,6 +8,7 @@ import ButtonProps from "../components/Button";
 import { getToken } from "../utils/getToken";
 import "../components/Button.css"
 import { useEffect } from "react";
+import Spinner from "react-bootstrap";
 
 export interface IAppProps { }
 interface RestaurantDetailsParams {
@@ -35,12 +36,15 @@ export function Restaurants(props: IAppProps) {
   const [comment, setComment] = React.useState("");
   const [commentList, setCommentList] = React.useState("");
   const [btnState, setBtnState] = useState(false)
+  const [arraycomments, setArraycomments] = React.useState([]);
+
+  const [loading, setLoading] = React.useState(true);
 
   let likeUnlikeHandler = async function (e: any) {
     e.preventDefault();
     const graphglQuery: any = {
       query: `mutation {
-    createlikeUnlike(likeUnlikeInput: {user: "Placeholder user", likeId: "${state._id}"})
+    createlikeUnlike(likeUnlikeInput: {token: "${token}",user: "Placeholder user", likeId: "${state._id}"})
 
     {
      likedAmount
@@ -64,7 +68,7 @@ export function Restaurants(props: IAppProps) {
   let likeViewHandler = async function () {
     const graphglQuery: any = {
       query: `query {
-        likesCheck(restaurantId:"${state._id}", user:""){
+        likesCheck(token: "${token}",restaurantId:"${state._id}", user:"245575E53"){
           likedAmount
           likedBoolean
         }
@@ -173,7 +177,11 @@ export function Restaurants(props: IAppProps) {
   };
 
   const basicOutput = async (output: any) => {
-    await console.log(JSON.parse(output.data.viewComments.user));
+    await console.log("test1", JSON.parse(output.data.viewComments.user));
+
+    await setArraycomments(JSON.parse(output.data.viewComments.user));
+    setLoading(false);
+    await console.log("arraycomments", arraycomments);
   };
 
   const commentHandler = function (event: any) {
@@ -283,7 +291,27 @@ export function Restaurants(props: IAppProps) {
           </div>
         </div>
       </form>
-      {/* end of placeholder code for backend  */}
+
+      <div>
+        {" "}
+        {loading ? (
+          <>
+            <div>loading</div>
+          </>
+        ) : (
+          arraycomments.map((element) => {
+            return (
+              <div>
+                name: {element.user}
+                <br />
+                comment: {element.comment}
+                <br /> time posted:
+                {element.serverTimeStamp}`
+              </div>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }
