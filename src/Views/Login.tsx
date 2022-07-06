@@ -4,8 +4,8 @@ import { Button, Form, FormGroup, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 interface userlogin {
-  token: string
-  userId : string
+  token: string;
+  userId: string;
 }
 
 export interface IAppProps {}
@@ -14,6 +14,7 @@ export function Login(props: IAppProps) {
   //texthandlers
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [errorMessages, setErrorMessages] = useState({});
 
   const passwordHandler = (event: any) => {
     setPassword(event.target.value);
@@ -44,11 +45,21 @@ export function Login(props: IAppProps) {
       body: JSON.stringify(graphglQuery),
     })
       .then((res) => res.json())
-      .then((resData) => basicOutput(resData));
+      .then((resData) => checkRes(resData));
   };
 
-  const basicOutput = (output: any) => {
-    console.log("output", output);
+  const checkRes = (resData) => {
+    console.log(resData);
+
+    setErrorMessages({});
+    if (resData.msg === "user not found")
+      setErrorMessages({ name: "uname", message: resData.uname });
+    if (resData.msg === "wrong password")
+      setErrorMessages({ name: "pass", message: resData.pass });
+    if (resData.data.login.token) {
+      localStorage.setItem("token", resData.data.login.token);
+      alert(" you have Succesfully logged in");
+    }
   };
   //End of frontend GraphQL connection
 
@@ -63,9 +74,9 @@ export function Login(props: IAppProps) {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
-          type="email"
-          onChange={emailHandler}
-          name="email"
+            type="email"
+            onChange={emailHandler}
+            name="email"
             value={email ? email : ""}
             placeholder="Enter email"
           />
@@ -73,28 +84,26 @@ export function Login(props: IAppProps) {
             We'll not share your email with anyone else.
           </Form.Text>
         </Form.Group>
-                <FormGroup className="mb-3" controlId="formBasicPassword">
+        <FormGroup className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
-          type="password"
-          onChange={passwordHandler}
-          name="password"
+            type="password"
+            onChange={passwordHandler}
+            name="password"
             value={password ? password : ""}
             placeholder="password"
           />
-          </FormGroup>
-         <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        </FormGroup>
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Remember Me" />
         </Form.Group>
-        <Button variant="outline-primary" type="submit" onClick={loginHandler }>
+        <Button variant="outline-primary" type="submit" onClick={loginHandler}>
           Login
         </Button>
         <Nav.Link as={Link} to={"/register"}>
-      New user? Click here to register.
-      </Nav.Link>
-
-</Form>
-      </div>
-
+          New user? Click here to register.
+        </Nav.Link>
+      </Form>
+    </div>
   );
 }

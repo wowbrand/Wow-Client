@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
-import { Button, Carousel, Form,  } from "react-bootstrap";
-import ButtonProps from '../components/Button';
-
+import * as React from "react";
+import { useParams, useLocation, Link } from "react-router-dom";
+import { Button, Carousel, Form } from "react-bootstrap";
+import ButtonProps from "../components/Button";
+import { getToken } from "../utils/getToken";
 
 export interface IAppProps {}
 interface RestaurantDetailsParams {
@@ -22,6 +22,8 @@ interface RestaurantI {
 }
 
 export function Restaurants(props: IAppProps) {
+  const token = getToken();
+
   let { name } = useParams<RestaurantDetailsParams>();
   let { state } = useLocation<RestaurantI>();
 
@@ -83,7 +85,7 @@ export function Restaurants(props: IAppProps) {
     console.log("comment", comment);
     const graphglQuery: any = {
       query: `mutation {
-    createComments(commentsInput: {user: "${"placeholderName"}", comment: "${comment}", option: "create", restaurantId: "${
+    createComments(commentsInput: {token: "${token}",user: "${"placeholderName"}", comment: "${comment}", option: "create", restaurantId: "${
         state._id
       }" })
 
@@ -151,7 +153,6 @@ export function Restaurants(props: IAppProps) {
       <p className="details">{state.restaurantcity}</p>
       <p className="details">{state.restaurantstreetnumber}</p>
       <p className="details">{state.restaurantzip}</p>
-
       <Link to={"/list"}>
         <ButtonProps
           border="none"
@@ -166,9 +167,8 @@ export function Restaurants(props: IAppProps) {
       </Link>
       <br></br>
       <br></br>
-<Link to={"/map"}>
+      <Link to={"/map"}>
         <ButtonProps
-
           border="none"
           color="#8FBDD3"
           font="24px"
@@ -179,49 +179,37 @@ export function Restaurants(props: IAppProps) {
           children="Find your route"
         />
       </Link>
-
-
-<div className="container mt-5">
-    <div className="d-flex justify-content-center row">
-        <div className="col-md-8">
+      <div className="container mt-5">
+        <div className="d-flex justify-content-center row">
+          <div className="col-md-8">
             <div className="d-flex flex-column comment-section">
-                <div className="bg-white p-2">
+              <div className="bg-white p-2"></div>
+              <div className="like p-2 cursor">
+                <i className="fa fa-commenting-o"></i>
+                <span className="ml-1">Comment</span>
               </div>
-      <div className="like p-2 cursor"><i className="fa fa-commenting-o"></i><span className="ml-1">Comment</span></div>
               <div className="bg-light p-2">
                 <div className="d-flex flex-row align-items-start"></div>
 
-          <Form.Control
-            onChange={commentHandler}
-            placeholder="Your comment"
-              />
-<div className="mt-2 text-right">
-                <Button
-          variant="btn btn-primary btn-sm shadow-none"
-          type="submit"
-                  onClick={commentClickHandler}
-        >
-          Post Comment
-                </Button>
+                <Form.Control
+                  onChange={commentHandler}
+                  placeholder="Your comment"
+                />
+                <div className="mt-2 text-right">
+                  <Button
+                    variant="btn btn-primary btn-sm shadow-none"
+                    type="submit"
+                    onClick={commentClickHandler}
+                  >
+                    Post Comment
+                  </Button>
                 </div>
-                </div>
+              </div>
+            </div>
           </div>
         </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-{/*
+      </div>
+      {/*
         Placeholder code for backend
       {/* Placeholder code for backend */}
       <form>
@@ -240,8 +228,7 @@ export function Restaurants(props: IAppProps) {
           <input type="submit" value="likeview" onClick={likeViewHandler} />
         </div>
       </form>
-       end of placeholder code for backend */
+      end of placeholder code for backend */
     </div>
-
   );
 }

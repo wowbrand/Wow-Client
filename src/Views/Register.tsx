@@ -2,15 +2,14 @@ import * as React from "react";
 import { useState } from "react";
 import { Nav, Button, Form, FormGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./Register.css"
+import "./Register.css";
 
 interface newUser {
-  name: string
-  email: string
-  _id: string
+  name: string;
+  email: string;
+  _id: string;
 }
-export interface IAppProps { }
-
+export interface IAppProps {}
 
 export function Register(props: IAppProps) {
   console.log("hez");
@@ -54,10 +53,9 @@ export function Register(props: IAppProps) {
     })
       .then((res) => res.json())
       .then((resData) => {
+        // const { data: { createUser } } = resData
 
-        const { data: { createUser } } = resData
-
-        basicOutput(createUser)
+        basicOutput(resData);
       });
   };
 
@@ -108,11 +106,7 @@ export function Register(props: IAppProps) {
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Remember Me" />
         </Form.Group>
-        <Button
-          variant="outline-primary"
-          type="submit"
-          onClick={signUpHandler}
-        >
+        <Button variant="outline-primary" type="submit" onClick={signUpHandler}>
           Register
         </Button>
 
@@ -122,5 +116,5 @@ export function Register(props: IAppProps) {
         </Nav.Link>
       </Form>
     </div>
-  )
+  );
 }
