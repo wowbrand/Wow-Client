@@ -1,8 +1,13 @@
-import * as React from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
-import { Button, Carousel, Form, } from "react-bootstrap";
-import ButtonProps from '../components/Button';
 
+import * as React from "react";
+import { useState } from "react";
+
+import { useParams, useLocation, Link } from "react-router-dom";
+import { Button, Carousel, Form } from "react-bootstrap";
+import ButtonProps from "../components/Button";
+import { getToken } from "../utils/getToken";
+import "../components/Button.css"
+import { useEffect } from "react";
 
 export interface IAppProps { }
 interface RestaurantDetailsParams {
@@ -22,11 +27,14 @@ interface RestaurantI {
 }
 
 export function Restaurants(props: IAppProps) {
+  const token = getToken();
+
   let { name } = useParams<RestaurantDetailsParams>();
   let { state } = useLocation<RestaurantI>();
 
   const [comment, setComment] = React.useState("");
   const [commentList, setCommentList] = React.useState("");
+  const [btnState, setBtnState] = useState(false)
 
   let likeUnlikeHandler = async function (e: any) {
     e.preventDefault();
@@ -48,11 +56,12 @@ export function Restaurants(props: IAppProps) {
       .then((res) => res.json())
       .then((resData) => {
         console.log(resData);
+        const isLiked = resData.data.createlikeUnlike.likedAmount === "0" ? false : true
+        setBtnState(isLiked)
       });
   };
 
-  let likeViewHandler = async function (e: any) {
-    e.preventDefault();
+  let likeViewHandler = async function () {
     const graphglQuery: any = {
       query: `query {
         likesCheck(restaurantId:"${state._id}", user:""){
@@ -70,20 +79,18 @@ export function Restaurants(props: IAppProps) {
       .then((res) => res.json())
       .then((resData) => {
         console.log(resData);
+        const isLiked = resData.data.likesCheck.likedAmount === "0" ? false : true
+        setBtnState(isLiked)
       });
   };
-
-  // let likeCheckHandler = async function (e: any) {
-  //   e.preventDefault();
-  // };
-
   let commentClickHandler = async function (e: any) {
     console.log(typeof e);
     e.preventDefault();
     console.log("comment", comment);
     const graphglQuery: any = {
       query: `mutation {
-    createComments(commentsInput: {user: "${"placeholderName"}", comment: "${comment}", option: "create", restaurantId: "${state._id
+
+    createComments(commentsInput: {token: "${token}",user: "${"placeholderName"}", comment: "${comment}", option: "create", restaurantId: "${state._id
         }" })
 
     {
@@ -102,6 +109,45 @@ export function Restaurants(props: IAppProps) {
         console.log(resData);
       });
   };
+
+  // let commentDeleteHandler = async function (e: any) {
+  //   console.log(typeof e);
+  //   e.preventDefault();
+  //   console.log("comment", comment);
+  //   const graphglQuery: any = {
+  //     query: `mutation {
+
+  //   deleteComments(commentsInput: {token: "${token}",user: "${"placeholderName"}", option: "delete", restaurantId: "${state._id
+  //       }" })
+
+  //   {
+  //    user
+  //    serverTimeStamp
+  //   }}
+  // `,
+  //   };
+  //   await fetch("http://localhost:8080/graphql", {
+  //     method: "POST",
+  //     headers: { "Content-type": "application/json" },
+  //     body: JSON.stringify(graphglQuery),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((resData) => {
+  //       console.log(resData);
+  //     });
+  // };
+
+
+
+
+
+
+
+
+
+
+
+
 
   let commentReceiveHandler = async function (e: any) {
     e.preventDefault();
@@ -134,6 +180,10 @@ export function Restaurants(props: IAppProps) {
     setComment(event.target.value);
   };
 
+  useEffect(() => {
+    likeViewHandler()
+  })
+
   return (
     <div className="restdetail">
       <h1>{name}</h1>
@@ -150,7 +200,6 @@ export function Restaurants(props: IAppProps) {
       <p className="details">{state.restaurantcity}</p>
       <p className="details">{state.restaurantstreetnumber}</p>
       <p className="details">{state.restaurantzip}</p>
-
       <Link to={"/list"}>
         <ButtonProps
           border="none"
@@ -167,7 +216,6 @@ export function Restaurants(props: IAppProps) {
       <br></br>
       <Link to={"/map"}>
         <ButtonProps
-
           border="none"
           color="#8FBDD3"
           font="24px"
@@ -178,8 +226,6 @@ export function Restaurants(props: IAppProps) {
           children="Find your route"
         />
       </Link>
-
-
       <div className="container mt-5">
         <div className="d-flex justify-content-center row">
           <div className="col-md-8">
@@ -202,6 +248,14 @@ export function Restaurants(props: IAppProps) {
                   >
                     Post Comment
                   </Button>
+
+                  {/* <Button
+                    variant="btn btn-primary btn-sm shadow-none"
+                    type="submit"
+                    onClick={commentDeleteHandler}
+                  >
+                    Delete Comment
+                  </Button> */}
                 </div>
               </div>
             </div>
@@ -209,19 +263,6 @@ export function Restaurants(props: IAppProps) {
         </div>
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-      {/*
-        Placeholder code for backend
       {/* Placeholder code for backend */}
       <form>
         {/* <label>
@@ -235,12 +276,14 @@ export function Restaurants(props: IAppProps) {
             value="receiver"
             onClick={commentReceiveHandler}
           /> */}
-          <input type="submit" value="LikeUnlike" onClick={likeUnlikeHandler} />
-          <input type="submit" value="likeview" onClick={likeViewHandler} />
+          {/* <input type="submit" value="LikeUnlike" onClick={likeUnlikeHandler} /> */}
+          {/* <input type="submit" value="likeview" onClick={likeViewHandler} /> */}
+          <div onClick={likeUnlikeHandler}>
+            {btnState ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>}
+          </div>
         </div>
       </form>
       {/* end of placeholder code for backend  */}
     </div>
-
   );
 }

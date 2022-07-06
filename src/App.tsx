@@ -12,11 +12,27 @@ import { Profile } from "./Views/Profile";
 import { Createrestaurant } from "./Views/createrestaurant";
 import { Restaurants } from "./Views/Restaurants";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import 'mapbox-gl/dist/mapbox-gl.css';
+import { useEffect, useState } from "react";
+import "mapbox-gl/dist/mapbox-gl.css";
 import { Map } from "./components/Map";
+import { getToken } from "./utils/getToken.js";
 
 const App: FC = () => {
+  const [user, setUser] = useState(false);
+
+  const checkIfUserIsLoggedIn = () => {
+    const token = getToken();
+    if (token) {
+      console.log("logged in");
+      setUser(true);
+    } else {
+      console.log("not logged");
+      setUser(false);
+    }
+  };
+  useEffect(() => {
+    checkIfUserIsLoggedIn();
+  }, [user]);
   return (
     <div>
       <Router>
@@ -37,7 +53,7 @@ const App: FC = () => {
             <Restaurants />
           </Route>
           <Route exact path="/map">
-            <Map/>
+            <Map />
           </Route>
 
           <Route exact path="/register">

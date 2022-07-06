@@ -12,3 +12,9 @@
   color: #242424;
   transition: all 0.3s ease-out
   }
+  .btn {
+    color: red
+  }
+  .btn active {
+    color: green
+  }
