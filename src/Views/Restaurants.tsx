@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { useState } from "react";
 
@@ -6,11 +5,11 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import { Button, Carousel, Form } from "react-bootstrap";
 import ButtonProps from "../components/Button";
 import { getToken } from "../utils/getToken";
-import "../components/Button.css"
+import "../components/Button.css";
 import { useEffect } from "react";
 import Spinner from "react-bootstrap";
 
-export interface IAppProps { }
+export interface IAppProps {}
 interface RestaurantDetailsParams {
   name: string;
 }
@@ -35,7 +34,7 @@ export function Restaurants(props: IAppProps) {
 
   const [comment, setComment] = React.useState("");
   const [commentList, setCommentList] = React.useState("");
-  const [btnState, setBtnState] = useState(false)
+  const [btnState, setBtnState] = useState(false);
   const [arraycomments, setArraycomments] = React.useState([]);
 
   const [loading, setLoading] = React.useState(true);
@@ -60,8 +59,9 @@ export function Restaurants(props: IAppProps) {
       .then((res) => res.json())
       .then((resData) => {
         console.log(resData);
-        const isLiked = resData.data.createlikeUnlike.likedAmount === "0" ? false : true
-        setBtnState(isLiked)
+        const isLiked =
+          resData.data.createlikeUnlike.likedAmount === "0" ? false : true;
+        setBtnState(isLiked);
       });
   };
 
@@ -83,19 +83,23 @@ export function Restaurants(props: IAppProps) {
       .then((res) => res.json())
       .then((resData) => {
         console.log(resData);
-        const isLiked = resData.data.likesCheck.likedAmount === "0" ? false : true
-        setBtnState(isLiked)
+        const isLiked =
+          resData.data.likesCheck.likedAmount === "0" ? false : true;
+        setBtnState(isLiked);
       });
   };
   let commentClickHandler = async function (e: any) {
+    console.log("e", e);
+    console.log("e", e);
     console.log(typeof e);
     e.preventDefault();
     console.log("comment", comment);
     const graphglQuery: any = {
       query: `mutation {
 
-    createComments(commentsInput: {token: "${token}",user: "${"placeholderName"}", comment: "${comment}", option: "create", restaurantId: "${state._id
-        }" })
+    createComments(commentsInput: {token: "${token}",user: "${"placeholderName"}", comment: "${comment}", option: "create", restaurantId: "${
+        state._id
+      }" })
 
     {
      user
@@ -114,44 +118,31 @@ export function Restaurants(props: IAppProps) {
       });
   };
 
-  // let commentDeleteHandler = async function (e: any) {
-  //   console.log(typeof e);
-  //   e.preventDefault();
-  //   console.log("comment", comment);
-  //   const graphglQuery: any = {
-  //     query: `mutation {
+  let commentDeleteHandler = async function (key: any, event: any) {
+    event.preventDefault();
+    console.log("event", key);
 
-  //   deleteComments(commentsInput: {token: "${token}",user: "${"placeholderName"}", option: "delete", restaurantId: "${state._id
-  //       }" })
+    const graphglQuery: any = {
+      query: `mutation {
 
-  //   {
-  //    user
-  //    serverTimeStamp
-  //   }}
-  // `,
-  //   };
-  //   await fetch("http://localhost:8080/graphql", {
-  //     method: "POST",
-  //     headers: { "Content-type": "application/json" },
-  //     body: JSON.stringify(graphglQuery),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((resData) => {
-  //       console.log(resData);
-  //     });
-  // };
+    createComments(commentsInput: {_id: "${key}",token: "${token}", option: "delete", restaurantId: "${state._id}" })
 
-
-
-
-
-
-
-
-
-
-
-
+    {
+     user
+     serverTimeStamp
+    }}
+  `,
+    };
+    await fetch("http://localhost:8080/graphql", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(graphglQuery),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        console.log(resData);
+      });
+  };
 
   let commentReceiveHandler = async function (e: any) {
     e.preventDefault();
@@ -180,8 +171,11 @@ export function Restaurants(props: IAppProps) {
     await console.log("test1", JSON.parse(output.data.viewComments.user));
 
     await setArraycomments(JSON.parse(output.data.viewComments.user));
-    setLoading(false);
-    await console.log("arraycomments", arraycomments);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    await console.log("arraycomments", typeof arraycomments);
   };
 
   const commentHandler = function (event: any) {
@@ -189,8 +183,8 @@ export function Restaurants(props: IAppProps) {
   };
 
   useEffect(() => {
-    likeViewHandler()
-  })
+    likeViewHandler();
+  });
 
   return (
     <div className="restdetail">
@@ -238,9 +232,11 @@ export function Restaurants(props: IAppProps) {
         <div className="d-flex justify-content-center row">
           <div className="col-md-8">
             <div className="d-flex flex-column comment-section">
-              <div className="bg-white p-2">
+              <div className="bg-white p-2"></div>
+              <div className="like p-2 cursor">
+                <i className="fa fa-commenting-o"></i>
+                <span className="ml-1">Comment</span>
               </div>
-              <div className="like p-2 cursor"><i className="fa fa-commenting-o"></i><span className="ml-1">Comment</span></div>
               <div className="bg-light p-2">
                 <div className="d-flex flex-row align-items-start"></div>
 
@@ -287,13 +283,21 @@ export function Restaurants(props: IAppProps) {
           {/* <input type="submit" value="LikeUnlike" onClick={likeUnlikeHandler} /> */}
           {/* <input type="submit" value="likeview" onClick={likeViewHandler} /> */}
           <div onClick={likeUnlikeHandler}>
-            {btnState ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>}
+            {btnState ? (
+              <i className="fas fa-heart"></i>
+            ) : (
+              <i className="far fa-heart"></i>
+            )}
           </div>
         </div>
       </form>
 
       <div>
-        {" "}
+        <input
+          type="submit"
+          value="receivecomment"
+          onClick={commentReceiveHandler}
+        />{" "}
         {loading ? (
           <>
             <div>loading</div>
@@ -306,7 +310,13 @@ export function Restaurants(props: IAppProps) {
                 <br />
                 comment: {element.comment}
                 <br /> time posted:
-                {element.serverTimeStamp}`
+                {element.serverTimeStamp}
+                <button
+                  key={element._id}
+                  onClick={(event) => commentDeleteHandler(element._id, event)}
+                >
+                  deletepost
+                </button>
               </div>
             );
           })
